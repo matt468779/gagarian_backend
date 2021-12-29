@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +14,7 @@ from users.models import Products, Cart, Purchase
 from django.contrib.auth.decorators import login_required
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 
 @api_view(['GET', 'POST'])
 def all_users(request):
@@ -29,16 +30,16 @@ def productDetails(request, pk):
 
         return Response(serializer.data)
 
+
 # @login_required(login_url='rest-auth/')
-permission_classes = (IsAuthenticated,)   
 @api_view(['GET'])
 def carts(request, id):
     if request.method == 'GET':
-
-        # user = User.objects.get(id=id)
-        # cartItems = Cart.objects.filter(id=user)
-        # serializer = CartSerializer(cartItems, many=True)
-        # data = serializer.data[0]['products']
-        # print (request)
-        return Response({data:'data'})
+        user = User.objects.get(id=id)
+        cartItems = Cart.objects.filter(id=user)
+        serializer = CartSerializer(cartItems, many=True)
+        data = serializer.data[0]['products']
+        print (request)
+        print( request.headers)
+        return Response(data)
 
