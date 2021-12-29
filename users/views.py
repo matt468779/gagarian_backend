@@ -6,8 +6,15 @@ from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth.models import User
+from rest_framework.serializers import Serializer
 
-from users.serializers import UserSerializer
+from users.serializers import CartSerializer, ProductSerializer, UserSerializer
+from users.models import Products, Cart, Purchase
+
+from django.contrib.auth.decorators import login_required
+
+from rest_framework.permissions import IsAuthenticated
+
 @api_view(['GET', 'POST'])
 def all_users(request):
     if (request.method == 'GET'):
@@ -15,36 +22,23 @@ def all_users(request):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-def loginPage(request):
-    page = 'login'
+def productDetails(request, pk):
+    if request.method == 'GET':
+        product = Products.objects.get(id=pk)
+        serializer = ProductSerializer(product)
 
-    if request.user.is_authenticated:
-        return redirect('home')
+        return Response(serializer.data)
 
-    if request.method == 'POST':
-        username = request.POST.get('username').lower()
-        password = request.POST.get('password')
+# @login_required(login_url='rest-auth/')
+permission_classes = (IsAuthenticated,)   
+@api_view(['GET'])
+def carts(request, id):
+    if request.method == 'GET':
 
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, "username or password doesn't exist")
+        # user = User.objects.get(id=id)
+        # cartItems = Cart.objects.filter(id=user)
+        # serializer = CartSerializer(cartItems, many=True)
+        # data = serializer.data[0]['products']
+        # print (request)
+        return Response({data:'data'})
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return Response({"hello": "helloworld"})
-        else:
-            messages.error(request, "username or password doesn't exist")
-        
-    return Response(data=user)
-
-def logoutUser(request):
-    logout(request)
-    return redirect('home')
-
-def registerPage(request):
-    user = User.objects.create()
-
-    

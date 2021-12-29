@@ -1,3 +1,4 @@
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
@@ -11,5 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        fields = ['name', 'available']
+        fields = ['name', 'available', 'price']
 
+class CartSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(read_only=True, many=True)
+    # id = UserSerializer(read_only=True)
+    class Meta:
+        model = Cart
+        fields = ['products']

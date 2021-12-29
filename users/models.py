@@ -21,8 +21,6 @@ class Purchase(models.Model):
         return self.product.name
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self) -> str:
-        return self.product.name
+    id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    products = models.ManyToManyField(Products)
+     

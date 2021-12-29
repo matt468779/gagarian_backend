@@ -4,11 +4,10 @@ from django.urls import path
 
 urlpatterns = [
     path('users', views.all_users),
-    path('login/', views.loginPage, name="login"),
-    path('register/', views.registerPage, name="register"),
-    path('logout/', views.logoutUser, name="logout"),
     path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls'))
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('product/<str:pk>/', views.productDetails, name='product'),
+    path('cart/<str:id>/', views.carts, name='cart'),
    # path('', views.home, name="home"),
 
 ]
