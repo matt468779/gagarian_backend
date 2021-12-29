@@ -32,14 +32,13 @@ def productDetails(request, pk):
 
 
 # @login_required(login_url='rest-auth/')
+
 @api_view(['GET'])
-def carts(request, id):
+def carts(request):
     if request.method == 'GET':
-        user = User.objects.get(id=id)
+        user = User.objects.get(username=request.user)
         cartItems = Cart.objects.filter(id=user)
         serializer = CartSerializer(cartItems, many=True)
         data = serializer.data[0]['products']
-        print (request)
-        print( request.headers)
         return Response(data)
 
