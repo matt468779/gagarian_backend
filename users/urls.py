@@ -1,6 +1,5 @@
-from django.urls.conf import include
 from users import views
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('users', views.all_users),
