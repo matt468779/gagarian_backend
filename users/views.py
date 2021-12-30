@@ -16,6 +16,10 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import authentication_classes, permission_classes
+
 @api_view(['GET', 'POST'])
 def all_users(request):
     if (request.method == 'GET'):
@@ -30,10 +34,10 @@ def productDetails(request, pk):
 
         return Response(serializer.data)
 
-
 # @login_required(login_url='rest-auth/')
-
 @api_view(['GET'])
+# @authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def carts(request):
     if request.method == 'GET':
         user = User.objects.get(username=request.user)
@@ -42,3 +46,9 @@ def carts(request):
         data = serializer.data[0]['products']
         return Response(data)
 
+@api_view(['GET'])
+# @authentication_classes([SessionAuthentication])
+@permission_classes([])
+def hello(request):
+    user = str(request.user)
+    return Response({'hello': user})

@@ -8,6 +8,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('product/<str:pk>/', views.productDetails, name='product'),
     path('cart/', views.carts, name='cart'),
+    path('hello/', views.hello, name='hello')
    # path('', views.home, name="home"),
 
 ]
