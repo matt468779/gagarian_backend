@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
 
+# class Category (models.Model):
+#     name = models.CharField(max_length=50)
+
 class Location(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     latitude  = models.DecimalField(max_digits=9, decimal_places=6)
@@ -20,7 +23,7 @@ class Products(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
-
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
         return self.name
@@ -43,4 +46,6 @@ class Cart(models.Model):
     quantity = models.IntegerField(default=1)
     def __str__(self) -> str:
         return str(self.user) + " " + str(self.product) + " " + str(self.quantity)
+
+
 
