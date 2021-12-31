@@ -32,16 +32,21 @@ def all_users(request):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([])
 def productDetails(request, pk):
     if request.method == 'GET':
-        product = Products.objects.get(id=pk)
-        serializer = ProductSerializer(product)
-
-        return Response(serializer.data)
+        try:
+            product = Products.objects.get(id=pk)
+            serializer = ProductSerializer(product)
+            data = serializer.data
+        except:
+            data = []
+        return Response(data)
 
 # @login_required(login_url='rest-auth/')
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication, SessionAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def carts(request):
     if request.method == 'GET':
@@ -81,6 +86,8 @@ def addToCart(request):
             print(cart)
     
         return Response(request.data)
+
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 1

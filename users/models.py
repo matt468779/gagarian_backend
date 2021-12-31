@@ -1,10 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.fields.related import OneToOneField
+from django.db.models.base import Model
+
+class Location(models.Model):
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude  = models.DecimalField(max_digits=9, decimal_places=6)
+    description = models.TextField()
 
 class UserProfile(models.Model):
-    user = OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='profile/%Y/%m/%d', blank=True)
+    homeLocation = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+
 
 class Products(models.Model):
     name = models.CharField(max_length=100)
@@ -19,9 +26,11 @@ class Products(models.Model):
         return self.name
 
 class Purchase(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(default=1)
+    deliveryLocation = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    status = models.CharField(max_length=50, default='ordered')
     def __str__(self) -> str:
         return self.product.name
 
