@@ -10,6 +10,8 @@ urlpatterns = [
     path('hello/', views.hello, name='hello'),
     path('addtocart/', views.addToCart, name='addToCart'),
     path('products/', views.ProductsList.as_view(), name='products'),
+    path('categories/', views.allCategories, name="allCategories"),
+    path('itemsbycategory/<str:pk>/', views.getItemsByCategory, name="getItemsByCategory")
    # path('', views.home, name="home"),
 
 ]

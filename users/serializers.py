@@ -2,7 +2,7 @@ from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from users.models import Products, Purchase, Cart, UserProfile
+from users.models import Category, Products, Purchase, Cart, UserProfile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        fields = ['name', 'available', 'price', 'image']
+        fields = ['name', 'available', 'price', 'image', 'description']
 
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -26,3 +26,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['user', 'image']
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']

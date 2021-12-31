@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.db.models.query import QuerySet
+from django.http.response import Http404
 from django.shortcuts import redirect, render
 from django.views import generic
 from rest_framework.decorators import api_view, permission_classes
@@ -11,19 +12,18 @@ from django.contrib.auth.models import User
 from rest_framework.serializers import Serializer
 from users import serializers
 
-from users.serializers import CartSerializer, ProductSerializer, UserProfileSerializer, UserSerializer
-from users.models import Products, Cart, Purchase, UserProfile
+from users.serializers import CartSerializer, CategorySerializer, ProductSerializer, UserProfileSerializer, UserSerializer
+from users.models import Category, Products, Cart, Purchase, UserProfile
 
 from django.contrib.auth.decorators import login_required
 
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.pagination import DjangoPaginator, PageNumberPagination
-from rest_framework import generics
+from rest_framework import generics, status
 
 @api_view(['GET', 'POST'])
 def all_users(request):
@@ -90,7 +90,7 @@ def addToCart(request):
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 1
+    page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
@@ -104,3 +104,27 @@ class ProductsList(generics.ListAPIView):
     #     queryset = self.get_queryset()
     #     serializer = ProductSerializer(queryset, many=True)
     #     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([])
+def allCategories(request):
+    if (request.method == 'GET'):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([])
+def getItemsByCategory(request, pk):
+    if (request.method == 'GET'):
+        try:
+            category = Category.objects.get(id=pk)
+            products = Products.objects.filter(category=category)
+            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+# def getItemsBycategory(request, pk):
+    
