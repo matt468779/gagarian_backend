@@ -9,11 +9,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'first_name', 'last_name', 'groups', 'password']
 
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Products
-        fields = ['name', 'available', 'price', 'image', 'description']
-
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
     # id = UserSerializer(read_only=True)
@@ -31,3 +26,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+
+class ProductSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    class Meta:
+        model = Products
+        fields = ['name', 'available', 'price', 'image', 'description', 'category']
