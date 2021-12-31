@@ -10,7 +10,6 @@ urlpatterns = [
     path('hello/', views.hello, name='hello'),
     path('addtocart/', views.addToCart, name='addToCart'),
     path('products/', views.ProductsList.as_view(), name='products'),
-
    # path('', views.home, name="home"),
 
 ]
