@@ -11,7 +11,8 @@ urlpatterns = [
     path('addtocart/', views.addToCart, name='addToCart'),
     path('products/', views.ProductsList.as_view(), name='products'),
     path('categories/', views.allCategories, name="allCategories"),
-    path('itemsbycategory/<str:pk>/', views.getItemsByCategory, name="getItemsByCategory")
+    path('itemsbycategory/<str:pk>/', views.getItemsByCategory, name="getItemsByCategory"),
+    path('checkout/', views.checkout, name="checkout"),
    # path('', views.home, name="home"),
 
 ]

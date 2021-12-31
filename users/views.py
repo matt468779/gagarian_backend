@@ -13,7 +13,7 @@ from rest_framework.serializers import Serializer
 from users import serializers
 
 from users.serializers import CartSerializer, CategorySerializer, ProductSerializer, UserProfileSerializer, UserSerializer
-from users.models import Category, Products, Cart, Purchase, UserProfile
+from users.models import Category, Location, Products, Cart, Purchase, UserProfile
 
 from django.contrib.auth.decorators import login_required
 
@@ -126,5 +126,25 @@ def getItemsByCategory(request, pk):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-# def getItemsBycategory(request, pk):
-    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def checkout(request):
+    purchase = Purchase()
+    user = User.objects.get(username=request.user)
+    deliveryLoc = Location()
+    deliveryLoc.description = request.data.get('location').get('description')
+    deliveryLoc.latitude = request.data.get('location').get('latitude')
+    deliveryLoc.longitude = request.data.get('location').get('longitude')
+    deliveryLoc.save()
+    for item in request.data.get('items'):
+        cart = Cart.objects.get(user=user, id=item)
+        purchase.product = cart.product
+        purchase.quantity = cart.quantity
+        purchase.user = user
+        purchase.deliveryLocation = deliveryLoc
+        purchase.save()
+        cart.delete()
+
+    return Response(request.data)
+
+
