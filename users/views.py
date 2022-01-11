@@ -113,7 +113,6 @@ def allCategories(request):
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
-
 @api_view(['GET'])
 @permission_classes([])
 def getItemsByCategory(request, pk):
@@ -125,6 +124,19 @@ def getItemsByCategory(request, pk):
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class GetItemsByCategory(generics.ListAPIView):
+    
+    def getItemsByCategory(request, pk):
+        if (request.method == 'GET'):
+            try:
+                category = Category.objects.get(id=pk)
+                products = Products.objects.filter(category=category)
+                serializer = ProductSerializer(products, many=True)
+                return Response(serializer.data)
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

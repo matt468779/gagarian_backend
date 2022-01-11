@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
+from django.db.models.fields import CharField, IntegerField, TextField
 
 class Category (models.Model):
     name = models.CharField(max_length=50)
@@ -49,5 +50,20 @@ class Cart(models.Model):
     def __str__(self) -> str:
         return str(self.user) + " " + str(self.product) + " " + str(self.quantity)
 
+class Packages(models.Model):
+    name = CharField(max_length=50)
+    minimum = IntegerField(default=1)
+    maximum = IntegerField(default=1)
+    discount = IntegerField(default=0)
+    description = TextField()
 
+    def __str__(self) -> str:
+        return self.name
+
+class Warehouse(models.Model):
+    name = models.CharField(max_length=50)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self) -> str:
+        return self.name
 
