@@ -6,7 +6,7 @@ from django.db.models.fields import CharField, IntegerField, TextField
 class Category (models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='categories/%Y/%m/%d', blank=True)
-    description = models.TextField(default="")
+    description = models.TextField(default=" ", blank=True)
     def __str__(self) -> str:
         return self.name
         
@@ -30,6 +30,7 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    tag = models.TextField(blank=True)
 
     def __str__(self) -> str:
         return self.name

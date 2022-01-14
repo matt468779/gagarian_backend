@@ -1,3 +1,4 @@
+from copyreg import constructor
 from django.contrib import messages
 from django.db.models.query import QuerySet
 from django.http.response import Http404, HttpResponse
@@ -100,10 +101,19 @@ class ProductsList(generics.ListAPIView):
     permission_classes = []
     pagination_class = StandardResultsSetPagination
 
-    # def list(self, request):
-    #     queryset = self.get_queryset()
-    #     serializer = ProductSerializer(queryset, many=True)
-    #     return Response(serializer.data)
+class GetItemsByCategory(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = []
+    pagination_class = StandardResultsSetPagination
+
+    def get(self, request, pk, *args, **kwargs):
+        self.pk = pk
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        category = Category.objects.get(id=self.pk)
+        products = Products.objects.filter(category=category)
+        return products
 
 @api_view(['GET'])
 @permission_classes([])
@@ -112,30 +122,6 @@ def allCategories(request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([])
-def getItemsByCategory(request, pk):
-    if (request.method == 'GET'):
-        try:
-            category = Category.objects.get(id=pk)
-            products = Products.objects.filter(category=category)
-            serializer = ProductSerializer(products, many=True)
-            return Response(serializer.data)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-class GetItemsByCategory(generics.ListAPIView):
-    
-    def getItemsByCategory(request, pk):
-        if (request.method == 'GET'):
-            try:
-                category = Category.objects.get(id=pk)
-                products = Products.objects.filter(category=category)
-                serializer = ProductSerializer(products, many=True)
-                return Response(serializer.data)
-            except:
-                return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
