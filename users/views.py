@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db.models.query import QuerySet
-from django.http.response import Http404
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.views import generic
 from rest_framework.decorators import api_view, permission_classes
@@ -12,8 +12,8 @@ from django.contrib.auth.models import User
 from rest_framework.serializers import Serializer
 from users import serializers
 
-from users.serializers import CartSerializer, CategorySerializer, ProductSerializer, UserProfileSerializer, UserSerializer
-from users.models import Category, Location, Products, Cart, Purchase, UserProfile
+from users.serializers import CartSerializer, CategorySerializer, PackagesSerializer, ProductSerializer, UserProfileSerializer, UserSerializer
+from users.models import Category, Location, Packages, Products, Cart, Purchase, UserProfile
 
 from django.contrib.auth.decorators import login_required
 
@@ -159,4 +159,17 @@ def checkout(request):
 
     return Response(request.data)
 
+@api_view(['GET'])
+@permission_classes([])
+def packages(request):
+    packages = Packages.objects.all()
+    packagesSerializer = PackagesSerializer(packages, many=True)
+    return Response(packagesSerializer.data)
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteAccount(request):
+    user = User.objects.get(username=request.user)
+    user.delete()
+    return Response(status=status.HTTP_200_OK)
+    

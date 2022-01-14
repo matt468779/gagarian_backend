@@ -13,6 +13,8 @@ urlpatterns = [
     path('categories/', views.allCategories, name="allCategories"),
     path('itemsbycategory/<str:pk>/', views.getItemsByCategory, name="getItemsByCategory"),
     path('checkout/', views.checkout, name="checkout"),
+    path('packages/', views.packages, name='packages'),
+    path('deleteAccount', views.deleteAccount, name='deleteAccount'),
    # path('', views.home, name="home"),
 
 ]
