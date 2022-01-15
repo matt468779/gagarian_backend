@@ -22,7 +22,8 @@ class UserProfile(models.Model):
 
 class Products(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=200, db_index=True)
+    name_locale = models.TextField(blank=True)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True)
     image1 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     image2 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     image3 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)

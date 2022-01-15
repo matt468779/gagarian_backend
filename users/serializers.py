@@ -30,7 +30,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     class Meta:
         model = Products
-        fields = ['id', 'name', 'tag', 'available', 'price', 'image1', 'image2', 'image3', 'description', 'category']
+        fields = ['id', 'name', 'name_locale', 'slug', 'tag', 'available', 'price', 'image1', 'image2', 'image3', 'description', 'category']
 
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)

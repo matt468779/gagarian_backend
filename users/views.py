@@ -35,10 +35,10 @@ def all_users(request):
 
 @api_view(['GET'])
 @permission_classes([])
-def productDetails(request, pk):
+def productDetails(request, slug):
     if request.method == 'GET':
         try:
-            product = Products.objects.get(id=pk)
+            product = Products.objects.get(slug=slug)
             serializer = ProductSerializer(product)
             data = serializer.data
         except:
@@ -91,7 +91,7 @@ def addToCart(request):
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 3
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
