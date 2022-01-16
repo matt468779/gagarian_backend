@@ -22,7 +22,7 @@ Change:
 'USER': 'igzqcxmdmlmblc'  
 'PASSWORD'='170311d87ffbd680ee89a6ae9edb811bc438720b1f4892c46ba2438f0cf5bfc4'  
 in the settings.py file, DATABASES - default    
-*Requires Python 3 and pip is required to run.*  
+*Requires Python 3 and pip*  
   
 #### superuser login:  
 username: matt  
