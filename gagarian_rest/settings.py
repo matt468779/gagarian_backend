@@ -82,8 +82,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = (
@@ -116,22 +118,22 @@ WSGI_APPLICATION = 'gagarian_rest.wsgi.application'
 
 DATABASES = {
     'default': {
+
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_NAME'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'PORT': '5432',
         'HOST': 'ec2-54-225-203-79.compute-1.amazonaws.com',
+
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'gagarian_db',
+        # 'USER': 'matt',
+        # 'PASSWORD': 'Password@123',
+        # 'PORT': '5432',
+        # 'HOST': 'localhost',
     }
 }
-
-# 'ENGINE': 'django.db.backends.postgresql',
-# 'NAME': 'gagarian_db',
-# 'USER': 'matt',
-# 'PASSWORD': 'Password@123',
-# 'PORT': '5432',
-# 'HOST': 'localhost',
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
