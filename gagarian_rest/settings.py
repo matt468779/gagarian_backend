@@ -119,13 +119,13 @@ WSGI_APPLICATION = 'gagarian_rest.wsgi.application'
 DATABASES = {
     'default': {
 
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'PORT': '5432',
-        'HOST': 'ec2-54-225-203-79.compute-1.amazonaws.com',
-
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': os.environ.get('POSTGRES_NAME'),
+        # 'USER': os.environ.get('POSTGRES_USER'),
+        # 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        # 'PORT': '5432',
+        # 'HOST': 'ec2-54-225-203-79.compute-1.amazonaws.com',
+        
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'gagarian_db',
         # 'USER': 'matt',
