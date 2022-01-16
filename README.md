@@ -25,6 +25,7 @@ in the settings.py file, DATABASES - default
 *Requires Python 3 and pip*  
   
 #### superuser login:  
+BASEURL/admin/
 username: matt  
 password: Password`123  
 
