@@ -7,14 +7,16 @@
 Backend is hosted on heroku: [GagarianRest](https://gagarianrest.herokuapp.com/ "https://gagarianrest.herokuapp.com/")  
 
 
-### `docker-compose up`  
-  
+`docker-compose up`  
+===================
+    
 Runs django server on local machine at http://0.0.0.0:8000/  
 *requires to install docker-compose*  
 
 -If you don't have docker  
-### `python manage.py runserver`  
-  
+`python manage.py runserver`  
+============================
+    
 *first install all requirements using* `pip install -r requirements.txt`  
 Change:  
 'NAME': 'd67kqbq6hnmd66'  
