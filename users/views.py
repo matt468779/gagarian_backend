@@ -1,4 +1,5 @@
 from copyreg import constructor
+from struct import pack
 from django.contrib import messages
 from django.db.models.query import QuerySet
 from django.http.response import Http404, HttpResponse
@@ -13,8 +14,8 @@ from django.contrib.auth.models import User
 from rest_framework.serializers import Serializer
 from users import serializers
 
-from users.serializers import CartSerializer, CategorySerializer, PackagesSerializer, ProductSerializer, UserProfileSerializer, UserSerializer
-from users.models import Category, Location, Packages, Products, Cart, Purchase, UserProfile
+from users.serializers import CartSerializer, CategorySerializer, PackageItemSerializer, PackagesSerializer, ProductSerializer, UserProfileSerializer, UserSerializer
+from users.models import Category, Location, PackageItems, Package, Products, Cart, Purchase, UserProfile
 
 from django.contrib.auth.decorators import login_required
 
@@ -25,6 +26,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.pagination import DjangoPaginator, PageNumberPagination
 from rest_framework import generics, status
+from django.db.models import Q
 
 @api_view(['GET', 'POST'])
 def all_users(request):
@@ -78,7 +80,7 @@ def addToCart(request):
             product = Products.objects.get(id=cartItem.get('product'))
             quantity = cartItem.get('quantity')
             
-            cart = Cart.objects.filter(user=user , product=product)
+            cart = Cart.objects.filter(Q(user=user) & Q(product=product))
             if cart.exists():
                 cart.update(quantity=quantity)
             else:
@@ -134,23 +136,33 @@ def checkout(request):
     deliveryLoc.latitude = request.data.get('location').get('latitude')
     deliveryLoc.longitude = request.data.get('location').get('longitude')
     deliveryLoc.save()
-    for item in request.data.get('items'):
-        cart = Cart.objects.get(user=user, id=item)
-        purchase.product = cart.product
-        purchase.quantity = cart.quantity
+    items = Cart.objects.filter(user=user)
+    
+    for item in items:
+        purchase.product = Products.objects.get(name=item.product)
+        purchase.quantity = item.quantity
         purchase.user = user
         purchase.deliveryLocation = deliveryLoc
         purchase.save()
-        cart.delete()
-
+        item.delete()
+    
     return Response(request.data)
 
 @api_view(['GET'])
 @permission_classes([])
 def packages(request):
-    packages = Packages.objects.all()
-    packagesSerializer = PackagesSerializer(packages, many=True)
-    return Response(packagesSerializer.data)
+    packages = Package.objects.all()
+    data = {}
+    for package in packages:
+        packId = package.id
+        item = {}
+        item['name'] = str(package.name)
+        item['description'] = package.description
+        packageItems = PackageItems.objects.filter(package=package)
+        packageItemSerializer = PackageItemSerializer(packageItems, many=True)
+        item['items'] = packageItemSerializer.data
+        data[packId] = item
+    return Response(data)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -158,4 +170,3 @@ def deleteAccount(request):
     user = User.objects.get(username=request.user)
     user.delete()
     return Response(status=status.HTTP_200_OK)
-    

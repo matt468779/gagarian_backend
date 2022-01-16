@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Category, Packages, Products, Purchase, Cart, UserProfile
+from .models import  Category, Package, PackageItems, Products, Purchase, Cart, UserProfile
 
 admin.site.register(Purchase)
 
@@ -12,9 +12,9 @@ class CartAdmin(admin.ModelAdmin):
 admin.site.register(UserProfile)
 admin.site.site_header='Gagarian Adminstration'
 
-@admin.register(Packages)
+@admin.register(Package)
 class PackagesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'minimum', 'maximum', 'discount')
+    list_display = ('name', 'description')
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -24,3 +24,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'price', 'available')
     prepopulated_fields = {'slug': ('name',)}
+
+@admin.register(PackageItems)
+class PackageItemsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'package', 'product', 'quantity')

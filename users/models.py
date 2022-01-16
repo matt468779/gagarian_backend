@@ -1,3 +1,5 @@
+from itertools import product
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
@@ -55,15 +57,20 @@ class Cart(models.Model):
     def __str__(self) -> str:
         return str(self.user) + " " + str(self.product) + " " + str(self.quantity)
 
-class Packages(models.Model):
+class Package(models.Model):
     name = CharField(max_length=50)
-    minimum = IntegerField(default=1)
-    maximum = IntegerField(default=1)
-    discount = IntegerField(default=0)
     description = TextField()
 
     def __str__(self) -> str:
         return self.name
+
+class PackageItems(models.Model):
+
+    package = models.ForeignKey(Package, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=20)
+    def __str__(self) -> str:
+        return str(self.package) + " " + str(self.product) + " " + str(self.quantity)
 
 class Warehouse(models.Model):
     name = models.CharField(max_length=50)
