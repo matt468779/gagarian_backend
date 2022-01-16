@@ -60,7 +60,7 @@ class Cart(models.Model):
 class Package(models.Model):
     name = CharField(max_length=50)
     description = TextField()
-    discount = models.IntegerField()
+    discount = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return self.name
