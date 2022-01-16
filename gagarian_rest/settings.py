@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-20!v67d*h74+tw3a+36r06etwvf+8@tziaf_efo_=ncdj0*r3e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -117,20 +117,22 @@ WSGI_APPLICATION = 'gagarian_rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gagarian_db',
-        'USER': 'matt',
-        'PASSWORD': 'Password@123',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'PORT': '5432',
-        'HOST': 'localhost',
+        'HOST': 'ec2-54-225-203-79.compute-1.amazonaws.com',
     }
 }
 
 # 'ENGINE': 'django.db.backends.postgresql',
-# 'NAME': os.environ.get('POSTGRES_NAME'),
-# 'USER': os.environ.get('POSTGRES_USER'),
-# 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+# 'NAME': 'gagarian_db',
+# 'USER': 'matt',
+# 'PASSWORD': 'Password@123',
 # 'PORT': '5432',
-# 'HOST': 'ec2-54-225-203-79.compute-1.amazonaws.com',
+# 'HOST': 'localhost',
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
