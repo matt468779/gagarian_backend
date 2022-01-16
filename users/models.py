@@ -60,6 +60,7 @@ class Cart(models.Model):
 class Package(models.Model):
     name = CharField(max_length=50)
     description = TextField()
+    discount = models.IntegerField()
 
     def __str__(self) -> str:
         return self.name
@@ -75,7 +76,6 @@ class PackageItems(models.Model):
 class Warehouse(models.Model):
     name = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
-    discount = models.IntegerField()
     def __str__(self) -> str:
         return self.name
 
