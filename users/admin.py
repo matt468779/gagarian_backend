@@ -14,7 +14,7 @@ admin.site.site_header='Gagarian Adminstration'
 
 @admin.register(Package)
 class PackagesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'discount')
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -30,5 +30,5 @@ class PackageItemsAdmin(admin.ModelAdmin):
     list_display = ('id', 'package', 'product', 'quantity')
 
 @admin.register(Location)
-class PackageItemsAdmin(admin.ModelAdmin):
+class LocationAdmin(admin.ModelAdmin):
     list_display = ('description', 'longitude', 'latitude')

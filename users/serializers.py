@@ -48,7 +48,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class PackagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Package
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'discount']
 
 class PackageItemSerializer(serializers.ModelSerializer):
     class Meta:
