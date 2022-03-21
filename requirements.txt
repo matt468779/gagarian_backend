@@ -1,4 +1,4 @@
-python==3.8
+python==3.8.6
 asgiref==3.4.1
 attrs==21.4.0
 bcrypt==3.2.0
